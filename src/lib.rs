@@ -1,6 +1,6 @@
-use std::{error::Error, fs, env};
+use std::{env, error::Error, fs};
 
-pub struct Config{
+pub struct Config {
     pub query: String,
     pub file_path: String,
     pub ignore_case: bool,
@@ -14,7 +14,11 @@ impl Config {
 
         let ignore_case = env::var("IGNORE_CASE").is_ok();
 
-        Ok(Config{query: args[1].clone(), file_path: args[2].clone(), ignore_case})
+        Ok(Config {
+            query: args[1].clone(),
+            file_path: args[2].clone(),
+            ignore_case,
+        })
     }
 }
 
@@ -42,7 +46,7 @@ pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
             results.push(line);
         }
     }
-    
+
     results
 }
 
@@ -84,6 +88,9 @@ safe, fast, productive.
 Pick three.
 Trust me.";
 
-        assert_eq!(vec!["Rust:", "Trust me."], search_case_insensitive(query, contents));
+        assert_eq!(
+            vec!["Rust:", "Trust me."],
+            search_case_insensitive(query, contents)
+        );
     }
 }
